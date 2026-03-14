@@ -168,7 +168,22 @@
     }
 
     .hero-meta a:hover { color: var(--gold); border-color: var(--gold); }
-
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+    }
+    .hero-photo {
+      width: 260px;
+      height: 340px;
+      object-fit: cover;
+      object-position: center top;
+      flex-shrink: 0;
+      border: 1px solid var(--border-strong);
+      filter: grayscale(20%);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s forwards;
+}
     .hero-scroll {
       position: absolute;
       bottom: 2.5rem;
@@ -635,6 +650,8 @@
   <!-- HERO -->
   <div id="hero">
     <div class="hero-grid-bg"></div>
+    <div class="hero-content">
+      <div>
     <p class="hero-label">Physics · Engineering · Art</p>
     <h1 class="hero-name">Sahan<br><em>Prathibha</em></h1>
     <p class="hero-tagline">
@@ -644,6 +661,9 @@
       <a href="/cdn-cgi/l/email-protection#d8abb9b0b9b6a8aab9acb0b1bab0b9afb1b2bd98bfb5b9b1b4f6bbb7b5"><span class="__cf_email__" data-cfemail="c2b1a3aaa3acb2b0a3b6aaaba0aaa3b5aba8a782a5afa3abaeeca1adaf">[email&#160;protected]</span></a>
       <a href="https://github.com/sahan-maker" target="_blank">github.com/sahan-maker</a>
       <a href="https://linkedin.com/in/sahan-wijethunga" target="_blank">LinkedIn</a>
+    </div>
+      </div>
+      <img src="profile_pic.jpg" alt="Sahan Prathibha" class="hero-photo">
     </div>
     <p class="hero-scroll">Scroll to explore</p>
   </div>

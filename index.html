@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sahan Prathibha — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0e0d;
+      --bg2: #161513;
+      --bg3: #1e1c19;
+      --cream: #e8dfc8;
+      --cream-dim: #a89f8a;
+      --gold: #c8a96e;
+      --gold-light: #e0c48a;
+      --red: #c0574a;
+      --text: #d4c9b0;
+      --border: rgba(200, 169, 110, 0.15);
+      --border-strong: rgba(200, 169, 110, 0.35);
+      --mono: 'DM Mono', monospace;
+      --serif: 'DM Serif Display', serif;
+      --body: 'Lora', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,14,13,0.85);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--cream);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      line-height: 1.0;
+      color: var(--cream);
+      letter-spacing: -0.02em;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-tagline {
+      max-width: 540px;
+      margin-top: 2rem;
+      font-size: 1.05rem;
+      color: var(--cream-dim);
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .hero-meta a {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-strong);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .hero-meta a:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 3rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: var(--cream-dim);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.2s forwards;
+    }
+
+    .hero-scroll::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--border-strong);
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 6rem 3rem;
+      border-bottom: 1px solid var(--border);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--cream);
+      letter-spacing: -0.01em;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── ABOUT ─── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .stat-box {
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      background: var(--bg2);
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .stat-box::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: 0;
+      width: 40%;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .stat-box:hover { border-color: var(--border-strong); }
+
+    .stat-num {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cream-dim);
+      margin-top: 0.4rem;
+    }
+
+    /* ─── RESEARCH ─── */
+    .research-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .research-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .research-item:first-child { border-top: 1px solid var(--border); }
+
+    .research-item:hover { background: rgba(200,169,110,0.02); }
+
+    .research-date {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      padding-top: 0.3rem;
+    }
+
+    .research-content h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--cream);
+      margin-bottom: 0.4rem;
+    }
+
+    .research-role {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+
+    .research-content p {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .research-content ul {
+      margin-top: 0.6rem;
+      padding-left: 1.2rem;
+    }
+
+    .research-content li {
+      font-size: 0.88rem;
+      color: var(--cream-dim);
+      margin-bottom: 0.3rem;
+    }
+
+    /* ─── SKILLS ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .skill-card {
+      border: 1px solid var(--border);
+      padding: 2rem;
+      background: var(--bg2);
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+    }
+
+    .skill-card-label {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border-strong);
+      color: var(--cream-dim);
+      letter-spacing: 0.06em;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .tag:hover { background: var(--border); color: var(--cream); }
+
+    /* ─── GALLERY ─── */
+    #art { max-width: 100%; padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
+    #art .section-header { max-width: 1100px; margin: 0 auto 4rem; }
+
+    .gallery-intro {
+      max-width: 1100px;
+      margin: 0 auto;
+      margin-bottom: 3rem;
+      font-size: 0.92rem;
+      color: var(--cream-dim);
+      font-style: italic;
+    }
+
+    .gallery-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      background: var(--bg3);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-item .art-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15,14,13,0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .gallery-item:hover .art-overlay { opacity: 1; }
+
+    .art-title {
+      font-family: var(--serif);
+      font-size: 1rem;
+      color: var(--cream);
+    }
+
+    .art-medium {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-top: 0.2rem;
+    }
+
+    /* Instagram embed wrapper */
+    .gallery-item {
+      aspect-ratio: unset !important;
+      min-height: 480px;
+    }
+
+    .ig-wrap {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .ig-wrap .instagram-media {
+      min-width: unset !important;
+      width: 100% !important;
+      margin: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+    }
+
+    /* ─── ACTIVITIES ─── */
+    .activities-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .activity-group h3 {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .activity-name {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .activity-role {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--cream-dim);
+      text-align: right;
+      max-width: 140px;
+    }
+
+    /* ─── CONTACT ─── */
+    #contact {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 3rem;
+      border-bottom: none;
+      max-width: 100%;
+    }
+
+    .contact-big {
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-big em { color: var(--gold); font-style: italic; }
+
+    .contact-sub {
+      font-size: 1rem;
+      color: var(--cream-dim);
+      margin-bottom: 3rem;
+      max-width: 400px;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .contact-btn {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--gold);
+      padding: 0.9rem 2rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .contact-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+    .contact-btn.outline {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--border-strong);
+    }
+
+    .contact-btn.outline:hover { background: var(--border); color: var(--cream); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--cream-dim);
+      letter-spacing: 0.08em;
+    }
+
+
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section, #art, #contact { padding: 4rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 3rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .research-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .activities-cols { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      footer { flex-direction: column; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">Sahan <span>Prathibha</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#art">Art</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-grid-bg"></div>
+    <p class="hero-label">Physics · Engineering · Art</p>
+    <h1 class="hero-name">Sahan<br><em>Prathibha</em></h1>
+    <p class="hero-tagline">
+      Physics undergraduate at the University of Peradeniya — bridging experimental physics, biomedical instrumentation, and creative expression through art, robotics, and code.
+    </p>
+    <div class="hero-meta">
+      <a href="/cdn-cgi/l/email-protection#d8abb9b0b9b6a8aab9acb0b1bab0b9afb1b2bd98bfb5b9b1b4f6bbb7b5"><span class="__cf_email__" data-cfemail="c2b1a3aaa3acb2b0a3b6aaaba0aaa3b5aba8a782a5afa3abaeeca1adaf">[email&#160;protected]</span></a>
+      <a href="https://github.com/sahan-maker" target="_blank">github.com/sahan-maker</a>
+      <a href="https://linkedin.com/in/sahan-wijethunga" target="_blank">LinkedIn</a>
+    </div>
+    <p class="hero-scroll">Scroll to explore</p>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">About</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a final-year Physics Honours student with a Computer Science minor, working at the intersection of experimental physics, biomedical engineering, and electronics. My research spans bio-impedance spectroscopy, radiation physics, and drone systems for swarm robotics.</p>
+        <p>Beyond the lab, I've represented Sri Lanka in a climate fellowship at Vanderbilt University and engaged with U.S. Department of State officials on climate action in Washington D.C. I lead and contribute to student organisations and love translating complex ideas into clear, creative forms — whether through scientific writing, digital art, or 3D animation.</p>
+        <p>IELTS 8.0 · GPA 3.40 / 4.00 · B.Sc. Honours in Physics</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-box">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Research Projects</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Volunteer Projects/yr</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3</div>
+          <div class="stat-label">International Schools</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">8.0</div>
+          <div class="stat-label">IELTS Score</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESEARCH -->
+  <section id="research">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Research</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="research-list">
+
+      <div class="research-item reveal">
+        <div class="research-date">Apr 2025<br>— Present</div>
+        <div class="research-content">
+          <h3>Admittance Profiling of Animal Tissues</h3>
+          <div class="research-role">Undergraduate Research Project · University of Peradeniya</div>
+          <p>Studying postmortem interval estimation through bio-impedance and complex admittance characterisation.</p>
+          <ul>
+            <li>Developed a bio-impedance measurement system using AD5933 with phase calibration for accurate complex impedance.</li>
+            <li>Modified a nanoVNA network analyser with a custom open-ended coaxial probe for tissue characterisation.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="research-item reveal">
+        <div class="research-date">Jun 2025<br>— Present</div>
+        <div class="research-content">
+          <h3>Qbits Lab — Drone Systems & Swarm Robotics</h3>
+          <div class="research-role">Volunteer Assistant · CodeGen</div>
+          <p>Hardware design and manufacturing for autonomous drone systems with RTK positioning.</p>
+          <ul>
+            <li>Designed hardware schematics and PCBs using Altium Designer.</li>
+            <li>First-hand experience in drone manufacturing and RTK positioning for swarm robotics.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="research-item reveal">
+        <div class="research-date">Sep 2023<br>— 2024</div>
+        <div class="research-content">
+          <h3>X-ray DAP Measurement System</h3>
+          <div class="research-role">Volunteer Research Assistant · Radiation Physics Lab, UoP</div>
+          <p>Development of a low-cost system for X-ray Dose Area Product (DAP) measurements.</p>
+          <ul>
+            <li>Developed a laser-assisted image processing technique to calculate radiation beam area.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Skills</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Programming</div>
+        <div class="skill-tags">
+          <span class="tag">Python</span>
+          <span class="tag">MATLAB</span>
+          <span class="tag">C++</span>
+          <span class="tag">C</span>
+          <span class="tag">Java</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Technical</div>
+        <div class="skill-tags">
+          <span class="tag">Altium Designer</span>
+          <span class="tag">LaTeX</span>
+          <span class="tag">Hardware Design</span>
+          <span class="tag">PCB Design</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Laboratory</div>
+        <div class="skill-tags">
+          <span class="tag">Spectroscopy</span>
+          <span class="tag">Electronics Prototyping</span>
+          <span class="tag">Bio-impedance</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Robotics</div>
+        <div class="skill-tags">
+          <span class="tag">ESP32</span>
+          <span class="tag">STM</span>
+          <span class="tag">ROS2</span>
+          <span class="tag">PID Control</span>
+          <span class="tag">GPS Systems</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Creative</div>
+        <div class="skill-tags">
+          <span class="tag">Digital Painting</span>
+          <span class="tag">3D Modelling</span>
+          <span class="tag">Animation</span>
+          <span class="tag">Photography</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-card-label">Soft Skills</div>
+        <div class="skill-tags">
+          <span class="tag">Public Speaking</span>
+          <span class="tag">Scientific Writing</span>
+          <span class="tag">Teamwork</span>
+          <span class="tag">IELTS 8.0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ART GALLERY -->
+  <div id="art">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Digital Art</h2>
+      <div class="section-line"></div>
+    </div>
+    <p class="gallery-intro reveal">
+      A selection of digital and traditional works — exploring form, light, and imagination beyond the laboratory.
+    </p>
+    <div class="gallery-grid">
+
+      <!-- Art 1 -->
+      <div class="gallery-item">
+        <div class="ig-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/CT9h0m9lPOv/"
+            data-instgrm-version="14"
+            style="width:100%;margin:0;border:none;border-radius:0;">
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Art 2 -->
+      <div class="gallery-item">
+        <div class="ig-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/Cf5j-A5PJvl/"
+            data-instgrm-version="14"
+            style="width:100%;margin:0;border:none;border-radius:0;">
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Art 3 -->
+      <div class="gallery-item">
+        <div class="ig-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/CI3Nem9lBOh/"
+            data-instgrm-version="14"
+            style="width:100%;margin:0;border:none;border-radius:0;">
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Art 4 -->
+      <div class="gallery-item">
+        <div class="ig-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/CDh-LhKFycn/"
+            data-instgrm-version="14"
+            style="width:100%;margin:0;border:none;border-radius:0;">
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Art 5 -->
+      <div class="gallery-item">
+        <div class="ig-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/CNEweK0lBZh/"
+            data-instgrm-version="14"
+            style="width:100%;margin:0;border:none;border-radius:0;">
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Art 6 -->
+      <div class="gallery-item">
+        <div class="ig-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/Cfan8PqvLqv/"
+            data-instgrm-version="14"
+            style="width:100%;margin:0;border:none;border-radius:0;">
+          </blockquote>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ACTIVITIES -->
+  <section id="activities">
+    <div class="section-header reveal">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Activities</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="activities-cols">
+      <div class="activity-group reveal">
+        <h3>Professional</h3>
+        <div class="activity-item">
+          <span class="activity-name">Inventors' Club, UoP</span>
+          <span class="activity-role">Vice President '24–'25</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-name">Physical Society, UoP</span>
+          <span class="activity-role">Senior Editor '24–'25</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-name">Rotaract Club, UoP</span>
+          <span class="activity-role">Director of Club Service</span>
+        </div>
+      </div>
+      <div class="activity-group reveal">
+        <h3>Schools &amp; Fellowships</h3>
+        <div class="activity-item">
+          <span class="activity-name">SSCCA Climate Tank — Vanderbilt &amp; D.C.</span>
+          <span class="activity-role">Winning team · 2025</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-name">ICTP Synchrotron Light Sources School</span>
+          <span class="activity-role">Online · 2025</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-name">Sri Lankan Summer School — Asteroseismology</span>
+          <span class="activity-role">ICTP PWF · 2024</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2 class="contact-big reveal">Let's <em>connect.</em></h2>
+    <p class="contact-sub reveal">Open to research collaborations, opportunities, and creative projects.</p>
+    <div class="contact-links reveal">
+      <a href="/cdn-cgi/l/email-protection#c6b5a7aea7a8b6b4a7b2aeafa4aea7b1afaca386a1aba7afaae8a5a9ab" class="contact-btn">Email Me</a>
+      <a href="https://linkedin.com/in/sahan-wijethunga" target="_blank" class="contact-btn outline">LinkedIn</a>
+      <a href="https://github.com/sahan-maker" target="_blank" class="contact-btn outline">GitHub</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 Sahan Prathibha · University of Peradeniya</p>
+    <p>Designed &amp; built with care</p>
+  </footer>
+
+  <script>
+    // ─── SCROLL REVEAL ───
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+  </script>
+  <script async src="//www.instagram.com/embed.js"></script>
+</body>
+</html>

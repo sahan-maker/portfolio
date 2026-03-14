@@ -390,6 +390,34 @@
 
     .tag:hover { background: var(--border); color: var(--cream); }
 
+    /* ─── HERO BG IMAGE ─── */
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center 30%;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      z-index: 0;
+    }
+    .hero-bg-img.loaded { opacity: 1; }
+    .hero-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(15,14,13,0.92) 0%,
+        rgba(15,14,13,0.75) 50%,
+        rgba(15,14,13,0.4) 100%
+      );
+      z-index: 1;
+    }
+    #hero > *:not(.hero-bg-img):not(.hero-bg-overlay):not(.hero-grid-bg) {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-grid-bg { z-index: 1; }
+
     /* ─── GALLERY ─── */
     #art { max-width: 100%; padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
     #art .section-header { max-width: 1100px; margin: 0 auto 4rem; }
@@ -408,7 +436,7 @@
       margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
+      gap: 3px;
       background: var(--border);
     }
 
@@ -420,14 +448,34 @@
       cursor: pointer;
     }
 
+    /* Image-only Instagram display */
+    .gallery-item .ig-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover .ig-img { transform: scale(1.05); }
+
+    .gallery-item .ig-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg3);
+    }
+    .ig-placeholder svg { opacity: 0.15; width: 40px; }
+
     .gallery-item .art-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(15,14,13,0.7);
+      background: linear-gradient(to top, rgba(15,14,13,0.85) 0%, transparent 60%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 1.5rem;
+      padding: 1.2rem;
       opacity: 0;
       transition: opacity 0.3s;
       pointer-events: none;
@@ -435,40 +483,25 @@
 
     .gallery-item:hover .art-overlay { opacity: 1; }
 
+    .art-overlay-link {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+    }
+
     .art-title {
       font-family: var(--serif);
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--cream);
     }
 
     .art-medium {
       font-family: var(--mono);
-      font-size: 0.6rem;
+      font-size: 0.58rem;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--gold);
       margin-top: 0.2rem;
-    }
-
-    /* Instagram embed wrapper */
-    .gallery-item {
-      aspect-ratio: unset !important;
-      min-height: 480px;
-    }
-
-    .ig-wrap {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .ig-wrap .instagram-media {
-      min-width: unset !important;
-      width: 100% !important;
-      margin: 0 !important;
-      border: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
     }
 
     /* ─── ACTIVITIES ─── */
@@ -634,6 +667,8 @@
 
   <!-- HERO -->
   <div id="hero">
+    <div class="hero-bg-img" id="heroBg"></div>
+    <div class="hero-bg-overlay"></div>
     <div class="hero-grid-bg"></div>
     <p class="hero-label">Physics · Engineering · Art</p>
     <h1 class="hero-name">Sahan<br><em>Prathibha</em></h1>
@@ -812,73 +847,73 @@
 
       <!-- Art 1 -->
       <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CT9h0m9lPOv/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
+        <div class="ig-placeholder" id="ig-ph-0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="art-overlay">
+          <a class="art-overlay-link" href="https://www.instagram.com/p/CT9h0m9lPOv/" target="_blank" rel="noopener"></a>
+          <div class="art-title">Figure Study</div>
+          <div class="art-medium">Digital Painting</div>
         </div>
       </div>
 
       <!-- Art 2 -->
       <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/Cf5j-A5PJvl/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
+        <div class="ig-placeholder" id="ig-ph-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="art-overlay">
+          <a class="art-overlay-link" href="https://www.instagram.com/p/Cf5j-A5PJvl/" target="_blank" rel="noopener"></a>
+          <div class="art-title">Yearning</div>
+          <div class="art-medium">Abstract Series</div>
         </div>
       </div>
 
       <!-- Art 3 -->
       <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CI3Nem9lBOh/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
+        <div class="ig-placeholder" id="ig-ph-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="art-overlay">
+          <a class="art-overlay-link" href="https://www.instagram.com/p/CI3Nem9lBOh/" target="_blank" rel="noopener"></a>
+          <div class="art-title">Portrait</div>
+          <div class="art-medium">Digital Painting</div>
         </div>
       </div>
 
       <!-- Art 4 -->
       <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CDh-LhKFycn/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
+        <div class="ig-placeholder" id="ig-ph-3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="art-overlay">
+          <a class="art-overlay-link" href="https://www.instagram.com/p/CDh-LhKFycn/" target="_blank" rel="noopener"></a>
+          <div class="art-title">Study</div>
+          <div class="art-medium">Digital Painting</div>
         </div>
       </div>
 
       <!-- Art 5 -->
       <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CNEweK0lBZh/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
+        <div class="ig-placeholder" id="ig-ph-4">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="art-overlay">
+          <a class="art-overlay-link" href="https://www.instagram.com/p/CNEweK0lBZh/" target="_blank" rel="noopener"></a>
+          <div class="art-title">Composition</div>
+          <div class="art-medium">Digital Painting</div>
         </div>
       </div>
 
       <!-- Art 6 -->
       <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/Cfan8PqvLqv/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
+        <div class="ig-placeholder" id="ig-ph-5">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+        <div class="art-overlay">
+          <a class="art-overlay-link" href="https://www.instagram.com/p/Cfan8PqvLqv/" target="_blank" rel="noopener"></a>
+          <div class="art-title">Impression</div>
+          <div class="art-medium">Digital Painting</div>
         </div>
       </div>
 
@@ -955,7 +990,53 @@
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
 
+    // ─── INSTAGRAM IMAGE LOADER ───
+    // Uses Instagram's oEmbed API (no auth needed for public posts)
+    // Returns a thumbnail_url we can use as a real <img>
+    const igPosts = [
+      { id: 'CT9h0m9lPOv', ph: 'ig-ph-0' },
+      { id: 'Cf5j-A5PJvl', ph: 'ig-ph-1' },
+      { id: 'CI3Nem9lBOh', ph: 'ig-ph-2' },
+      { id: 'CDh-LhKFycn', ph: 'ig-ph-3' },
+      { id: 'CNEweK0lBZh', ph: 'ig-ph-4' },
+      { id: 'Cfan8PqvLqv', ph: 'ig-ph-5' },
+    ];
+
+    const heroBgPost = 'CoHLFVisYAn';
+
+    async function loadIgImage(postId, placeholderId, isHero = false) {
+      try {
+        const url = `https://api.instagram.com/oembed/?url=https://www.instagram.com/p/${postId}/&maxwidth=800&omitscript=true`;
+        const res = await fetch(url);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data.thumbnail_url) return;
+
+        if (isHero) {
+          const heroBg = document.getElementById('heroBg');
+          heroBg.style.backgroundImage = `url('${data.thumbnail_url}')`;
+          setTimeout(() => heroBg.classList.add('loaded'), 50);
+        } else {
+          const ph = document.getElementById(placeholderId);
+          if (!ph) return;
+          const img = document.createElement('img');
+          img.src = data.thumbnail_url;
+          img.className = 'ig-img';
+          img.alt = data.title || 'Artwork';
+          img.loading = 'lazy';
+          ph.replaceWith(img);
+        }
+      } catch (e) {
+        // silently fail — placeholder remains
+      }
+    }
+
+    // Load hero background
+    loadIgImage(heroBgPost, null, true);
+
+    // Load gallery images
+    igPosts.forEach(p => loadIgImage(p.id, p.ph, false));
+
   </script>
-  <script async src="//www.instagram.com/embed.js"></script>
 </body>
 </html>

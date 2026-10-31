@@ -1,981 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sahan Prathibha — Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0f0e0d;
-      --bg2: #161513;
-      --bg3: #1e1c19;
-      --cream: #e8dfc8;
-      --cream-dim: #a89f8a;
-      --gold: #c8a96e;
-      --gold-light: #e0c48a;
-      --red: #c0574a;
-      --text: #d4c9b0;
-      --border: rgba(200, 169, 110, 0.15);
-      --border-strong: rgba(200, 169, 110, 0.35);
-      --mono: 'DM Mono', monospace;
-      --serif: 'DM Serif Display', serif;
-      --body: 'Lora', serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--body);
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
-
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.03;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.4rem 3rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(15,14,13,0.85);
-      backdrop-filter: blur(12px);
-    }
-
-    .nav-logo {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      color: var(--cream);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-    }
-
-    .nav-logo span { color: var(--gold); }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--cream-dim);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--gold); }
-
-    /* ─── HERO ─── */
-    #hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 8rem 3rem 4rem;
-      position: relative;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero-grid-bg {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(var(--border) 1px, transparent 1px),
-        linear-gradient(90deg, var(--border) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 30%, transparent 100%);
-      pointer-events: none;
-    }
-
-    .hero-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.2s forwards;
-    }
-
-    .hero-name {
-      font-family: var(--serif);
-      font-size: clamp(3.5rem, 8vw, 7rem);
-      line-height: 1.0;
-      color: var(--cream);
-      letter-spacing: -0.02em;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
-    }
-
-    .hero-name em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .hero-tagline {
-      max-width: 540px;
-      margin-top: 2rem;
-      font-size: 1.05rem;
-      color: var(--cream-dim);
-      line-height: 1.8;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.6s forwards;
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 2.5rem;
-      margin-top: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.8s forwards;
-    }
-
-    .hero-meta a {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--cream-dim);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border-strong);
-      padding-bottom: 2px;
-      transition: color 0.2s, border-color 0.2s;
-    }
-
-    .hero-meta a:hover { color: var(--gold); border-color: var(--gold); }
-    .hero-content {
-      display: flex;
-      align-items: center;
-      gap: 4rem;
-    }
-    .hero-photo {
-      width: 260px;
-      height: 340px;
-      object-fit: cover;
-      object-position: center top;
-      flex-shrink: 0;
-      border: 1px solid var(--border-strong);
-      filter: grayscale(20%);
-      opacity: 0;
-      animation: fadeUp 0.8s 0.5s forwards;
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sahan Wijethunga – Soft materials and electrical interactions</title>
+<meta name="description" content="Physicist and electronics engineer working on how electricity interacts with soft materials. Bio-impedance, RF, embedded systems and theoretical physics.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f4f2;--panel:#e4eae7;--ink:#17242a;--mute:#4f6068;--line:#c3cfca;--accent:#3b3fd8;--rose:#b83a63;
+--serif:"Instrument Serif",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121b20;--panel:#1b272d;--ink:#e6eeeb;--mute:#98aab2;--line:#2e3e46;--accent:#8e91ff;--rose:#f07fa3}}
+:root{box-sizing:border-box}*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--sans)}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 1.5rem}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:1.5rem;align-items:center;justify-content:space-between;padding-top:.8rem;padding-bottom:.8rem}
+.brand{font:1.35rem var(--serif);color:var(--ink);text-decoration:none}
+nav{display:flex;gap:1.1rem;overflow-x:auto;font-size:.95rem}
+nav a{color:var(--mute);text-decoration:none;white-space:nowrap}nav a:hover{color:var(--accent)}
+.hero{padding:4rem 0 3rem;display:grid;grid-template-columns:1.15fr 1fr;gap:3rem;align-items:center}
+h1{font:400 clamp(2.8rem,6.5vw,5rem)/1 var(--serif);margin:0 0 1.2rem;letter-spacing:-.01em}
+.lede{font-size:1.2rem;max-width:34rem;margin:0 0 1.5rem}
+.links{display:flex;flex-wrap:wrap;gap:.6rem}
+.links a{border:1px solid var(--ink);color:var(--ink);padding:.45rem .9rem;border-radius:2px;text-decoration:none;font-weight:500;font-size:.95rem}
+.links a:first-child{background:var(--ink);color:var(--bg)}.links a:hover{border-color:var(--accent);color:var(--accent)}.links a:first-child:hover{background:var(--accent);color:var(--bg)}
+.plot{background:var(--panel);border:1px solid var(--line);padding:1rem 1rem .8rem;border-radius:2px}
+.plot svg{width:100%;height:auto;display:block}
+.plot .ax{stroke:var(--mute);stroke-width:1}.plot .t{fill:var(--mute);font:12px var(--sans)}
+.plot .c1{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}.plot .c2{fill:none;stroke:var(--rose);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.plot .dot{fill:var(--ink)}.plot .mk{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 3}.plot label+label{margin-top:.1rem}
+.plot label{display:flex;gap:.8rem;align-items:center;font-size:.9rem;color:var(--mute);margin-top:.4rem}
+.plot input{flex:1;accent-color:var(--accent)}
+.plot output{min-width:6.5rem;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.plot p{margin:.6rem 0 0;font-size:.85rem;color:var(--mute);line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;padding:1.2rem 0 1.4rem;border-top:1px solid var(--line)}
+.chips button{font:500 .93rem var(--sans);color:var(--ink);background:transparent;border:1px solid var(--ink);border-radius:99px;padding:.3rem .9rem;cursor:pointer}
+.chips button:hover{border-color:var(--accent);color:var(--accent)}
+.chips button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chiplabel{color:var(--mute);font-size:.92rem;margin-right:.2rem}
+#fstat{margin-left:auto}
+[hidden]{display:none!important}
+section{padding:3.5rem 0;border-top:1px solid var(--line)}
+h2{font:400 clamp(2rem,4vw,2.9rem)/1.1 var(--serif);margin:0 0 1.5rem}
+h3{font:600 1.1rem/1.35 var(--sans);margin:0 0 .25rem}
+.cols{display:grid;grid-template-columns:12rem 1fr;gap:1rem 3rem}
+.cols>.k{color:var(--mute);font-size:.95rem}
+.entry{margin-bottom:1.8rem}.entry:last-child{margin-bottom:0}
+.entry p{margin:.2rem 0 0;max-width:42rem}.when{color:var(--mute);font-size:.92rem}
+ul.plain{list-style:none;padding:0;margin:.4rem 0 0}ul.plain li{padding:.15rem 0;max-width:42rem}
+.tag{display:inline-block;background:var(--panel);border:1px solid var(--line);padding:.1rem .6rem;border-radius:99px;font-size:.88rem;margin:0 .3rem .4rem 0}
+.focus{background:var(--panel);padding:1.5rem 1.7rem;border-left:4px solid var(--accent);margin:0 0 2rem;max-width:46rem}
+.focus p{margin:0}
+.rail,.note{display:none}.note{margin:.9rem 0 0;padding-left:.9rem;border-left:3px solid var(--line);max-width:22rem;font-size:.88rem;line-height:1.5;color:var(--mute)}
+.note p{margin:.5rem 0 0}.note figure{margin:0}.note img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:2px}
+.note figcaption{margin-top:.35rem}.note .eq{font:italic 1.2rem/1.3 var(--serif);color:var(--ink);margin-top:.9rem}
+.entry{position:relative}
+@media (min-width:1200px){
+main.wrap{max-width:1500px;padding-left:210px;padding-right:330px}
+.note{display:block;position:absolute;left:100%;top:.2rem;width:16rem;margin:0 0 0 2.2rem}
+.rail{display:block;position:fixed;top:6.5rem;left:max(1.5rem,calc((100vw - 1500px)/2 + 1.5rem));width:10.5rem;z-index:2}
+.rail ol{list-style:none;margin:0;padding:0 0 0 .9rem;border-left:2px solid var(--line)}
+.rail li{margin:0 0 .75rem;position:relative}
+.rail li::before{content:"";position:absolute;left:calc(-.9rem - 6px);top:.45rem;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--line)}
+.rail a{display:block;color:var(--mute);font-size:.82rem;line-height:1.3;text-decoration:none}
+.rail a b{display:block;font-weight:600;color:var(--ink);font-size:.8rem}
+.rail a:hover{color:var(--accent)}
+.rail li.on::before{background:var(--accent);border-color:var(--accent)}
+.rail li.on a,.rail li.on a b{color:var(--accent)}
 }
-    .hero-scroll {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 3rem;
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      color: var(--cream-dim);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      opacity: 0;
-      animation: fadeUp 0.8s 1.2s forwards;
-    }
-
-    .hero-scroll::before {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1px;
-      background: var(--border-strong);
-    }
-
-    /* ─── SECTIONS ─── */
-    section {
-      padding: 6rem 3rem;
-      border-bottom: 1px solid var(--border);
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1.2rem;
-      margin-bottom: 4rem;
-    }
-
-    .section-num {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: 2.2rem;
-      color: var(--cream);
-      letter-spacing: -0.01em;
-    }
-
-    .section-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    /* ─── ABOUT ─── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-    }
-
-    .about-text p {
-      margin-bottom: 1.2rem;
-      font-size: 1rem;
-      color: var(--text);
-    }
-
-    .about-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-
-    .stat-box {
-      border: 1px solid var(--border);
-      padding: 1.5rem;
-      background: var(--bg2);
-      position: relative;
-      transition: border-color 0.3s;
-    }
-
-    .stat-box::before {
-      content: '';
-      position: absolute;
-      top: -1px; left: 0;
-      width: 40%;
-      height: 1px;
-      background: var(--gold);
-    }
-
-    .stat-box:hover { border-color: var(--border-strong); }
-
-    .stat-num {
-      font-family: var(--serif);
-      font-size: 2.2rem;
-      color: var(--gold);
-      line-height: 1;
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--cream-dim);
-      margin-top: 0.4rem;
-    }
-
-    /* ─── RESEARCH ─── */
-    .research-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .research-item {
-      display: grid;
-      grid-template-columns: 120px 1fr;
-      gap: 2rem;
-      padding: 2.5rem 0;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-      transition: background 0.3s;
-    }
-
-    .research-item:first-child { border-top: 1px solid var(--border); }
-
-    .research-item:hover { background: rgba(200,169,110,0.02); }
-
-    .research-date {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--gold);
-      letter-spacing: 0.1em;
-      padding-top: 0.3rem;
-    }
-
-    .research-content h3 {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      color: var(--cream);
-      margin-bottom: 0.4rem;
-    }
-
-    .research-role {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--gold);
-      margin-bottom: 0.8rem;
-    }
-
-    .research-content p {
-      font-size: 0.92rem;
-      color: var(--text);
-    }
-
-    .research-content ul {
-      margin-top: 0.6rem;
-      padding-left: 1.2rem;
-    }
-
-    .research-content li {
-      font-size: 0.88rem;
-      color: var(--cream-dim);
-      margin-bottom: 0.3rem;
-    }
-
-    /* ─── SKILLS ─── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .skill-card {
-      border: 1px solid var(--border);
-      padding: 2rem;
-      background: var(--bg2);
-      transition: border-color 0.3s, transform 0.3s;
-    }
-
-    .skill-card:hover {
-      border-color: var(--border-strong);
-      transform: translateY(-3px);
-    }
-
-    .skill-card-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-      margin-bottom: 1rem;
-    }
-
-    .skill-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      padding: 0.3rem 0.7rem;
-      border: 1px solid var(--border-strong);
-      color: var(--cream-dim);
-      letter-spacing: 0.06em;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .tag:hover { background: var(--border); color: var(--cream); }
-
-    /* ─── GALLERY ─── */
-    #art { max-width: 100%; padding: 6rem 3rem; border-bottom: 1px solid var(--border); }
-    #art .section-header { max-width: 1100px; margin: 0 auto 4rem; }
-
-    .gallery-intro {
-      max-width: 1100px;
-      margin: 0 auto;
-      margin-bottom: 3rem;
-      font-size: 0.92rem;
-      color: var(--cream-dim);
-      font-style: italic;
-    }
-
-    .gallery-grid {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-    }
-
-    .gallery-item {
-      position: relative;
-      aspect-ratio: 1;
-      background: var(--bg3);
-      overflow: hidden;
-      cursor: pointer;
-    }
-
-    .gallery-item .art-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(15,14,13,0.7);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
-
-    .gallery-item:hover .art-overlay { opacity: 1; }
-
-    .art-title {
-      font-family: var(--serif);
-      font-size: 1rem;
-      color: var(--cream);
-    }
-
-    .art-medium {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--gold);
-      margin-top: 0.2rem;
-    }
-
-    /* Instagram embed wrapper */
-    .gallery-item {
-      aspect-ratio: unset !important;
-      min-height: 480px;
-    }
-
-    .ig-wrap {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .ig-wrap .instagram-media {
-      min-width: unset !important;
-      width: 100% !important;
-      margin: 0 !important;
-      border: none !important;
-      border-radius: 0 !important;
-      box-shadow: none !important;
-    }
-
-    /* ─── ACTIVITIES ─── */
-    .activities-cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-
-    .activity-group h3 {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--gold);
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.8rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .activity-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 0.9rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .activity-name {
-      font-size: 0.9rem;
-      color: var(--text);
-    }
-
-    .activity-role {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      color: var(--cream-dim);
-      text-align: right;
-      max-width: 140px;
-    }
-
-    /* ─── CONTACT ─── */
-    #contact {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 8rem 3rem;
-      border-bottom: none;
-      max-width: 100%;
-    }
-
-    .contact-big {
-      font-family: var(--serif);
-      font-size: clamp(2.5rem, 6vw, 5rem);
-      color: var(--cream);
-      line-height: 1.1;
-      margin-bottom: 1.5rem;
-    }
-
-    .contact-big em { color: var(--gold); font-style: italic; }
-
-    .contact-sub {
-      font-size: 1rem;
-      color: var(--cream-dim);
-      margin-bottom: 3rem;
-      max-width: 400px;
-    }
-
-    .contact-links {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .contact-btn {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--gold);
-      padding: 0.9rem 2rem;
-      text-decoration: none;
-      transition: background 0.2s, transform 0.2s;
-      display: inline-block;
-    }
-
-    .contact-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
-
-    .contact-btn.outline {
-      background: transparent;
-      color: var(--gold);
-      border: 1px solid var(--border-strong);
-    }
-
-    .contact-btn.outline:hover { background: var(--border); color: var(--cream); }
-
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 2rem 3rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    footer p {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--cream-dim);
-      letter-spacing: 0.08em;
-    }
-
-
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ─── RESPONSIVE ─── */
-    @media (max-width: 768px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      section, #art, #contact { padding: 4rem 1.5rem; }
-      #hero { padding: 7rem 1.5rem 3rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .skills-grid { grid-template-columns: 1fr 1fr; }
-      .research-item { grid-template-columns: 1fr; gap: 0.5rem; }
-      .activities-cols { grid-template-columns: 1fr; }
-      .gallery-grid { grid-template-columns: 1fr 1fr; }
-      footer { flex-direction: column; gap: 1rem; }
-    }
-  </style>
+@media (min-width:1200px) and (max-height:700px){.rail li{margin-bottom:.4rem}.rail a{font-size:.76rem}}
+.demo{margin-top:1rem;max-width:42rem;border:1px solid var(--line);background:var(--panel);border-radius:2px}
+.demo summary{cursor:pointer;padding:.7rem 1rem;font-weight:500;color:var(--accent)}
+.demo summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.demobody{padding:0 1rem 1rem}.demobody p{margin:.3rem 0 .6rem}
+#pbars{width:100%;height:auto;display:block}
+#pbars .ax{stroke:var(--mute);stroke-width:1}#pbars .edge{stroke:var(--rose);stroke-width:1.5;stroke-dasharray:4 3}
+#pbars .t{fill:var(--mute);font:12px var(--sans)}#pbars rect{fill:var(--accent)}
+.ctl label{display:flex;gap:.8rem;align-items:center;font-size:.92rem;color:var(--mute);margin:.2rem 0}
+.ctl label input{flex:1;accent-color:var(--accent)}.ctl output{min-width:5.5rem;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+.demobody .readout{color:var(--ink);font-size:.95rem;line-height:1.5;margin-top:.7rem}
+.demobody .fine{font-size:.82rem;color:var(--mute);line-height:1.45}
+footer{padding:2.5rem 0 3rem;border-top:1px solid var(--line);color:var(--mute);font-size:.92rem}
+@media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr);padding-top:2.5rem}.cols{grid-template-columns:minmax(0,1fr)}header.top .wrap{flex-direction:column;align-items:stretch;gap:.4rem}nav{max-width:100%}}
+</style>
 </head>
 <body>
+<header class="top"><div class="wrap">
+<a class="brand" href="#top">Sahan Wijethunga</a>
+<nav aria-label="Sections"><a href="#research">Research</a><a href="#theory">Theory</a><a href="#electronics">Electronics</a><a href="#projects">Projects</a><a href="#teaching">Teaching</a><a href="#beyond">Beyond</a><a href="#contact">Contact</a></nav>
+</div></header>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#hero" class="nav-logo">Sahan <span>Prathibha</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#art">Art</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+<main id="top" class="wrap">
+<aside class="rail" aria-label="Timeline"><ol>
+<li><a href="#education" data-to="education"><b>2021</b>Starts physics at Peradeniya</a></li>
+<li><a href="#xray" data-to="xray"><b>2023</b>X-ray dose lab</a></li>
+<li><a href="#asteroseismology" data-to="asteroseismology"><b>2024</b>Asteroseismology school</a></li>
+<li><a href="#thesis" data-to="thesis"><b>2025</b>Honours thesis</a></li>
+<li><a href="#qrbots" data-to="qrbots"><b>2025</b>QRBOTS at Qbits Lab</a></li>
+<li><a href="#er-epr" data-to="er-epr"><b>2025</b>ER = EPR poster</a></li>
+<li><a href="#sscca" data-to="sscca"><b>2025</b>Climate fellowship</a></li>
+<li><a href="#preprint" data-to="preprint"><b>2026</b>Time-dilation preprint</a></li>
+<li><a href="#gta" data-to="gta"><b>2026</b>Teaching assistant</a></li>
+</ol></aside>
 
-  <!-- HERO -->
-  <div id="hero">
-    <div class="hero-grid-bg"></div>
-    <div class="hero-content">
-      <div>
-    <p class="hero-label">Physics · Engineering · Art</p>
-    <h1 class="hero-name">Sahan<br><em>Prathibha</em></h1>
-    <p class="hero-tagline">
-      Physics graduate from the University of Peradeniya — bridging experimental physics, biomedical instrumentation, and creative expression through art, robotics, and code.
-    </p>
-    <div class="hero-meta">
-      <a href="/cdn-cgi/l/email-protection#d8abb9b0b9b6a8aab9acb0b1bab0b9afb1b2bd98bfb5b9b1b4f6bbb7b5"><span class="__cf_email__" data-cfemail="c2b1a3aaa3acb2b0a3b6aaaba0aaa3b5aba8a782a5afa3abaeeca1adaf">[email&#160;protected]</span></a>
-      <a href="https://github.com/sahan-maker" target="_blank">github.com/sahan-maker</a>
-      <a href="https://linkedin.com/in/sahan-wijethunga" target="_blank">LinkedIn</a>
-    </div>
-      </div>
-      <img src="profile_pic.jpg" alt="Sahan Prathibha" class="hero-photo">
-    </div>
-    <p class="hero-scroll">Scroll to explore</p>
-  </div>
+<div class="hero">
+<div>
+<h1>How electricity moves through soft matter</h1>
+<p class="lede">I’m Sahan, a physicist and electronics engineer from Sri Lanka. I study how electric fields interact with soft and biological materials, and I build the instruments to measure it. I also think about theoretical physics, mostly where spacetime and quantum information meet.</p>
+<div class="links">
+<a href="#research">See my research</a>
+<a href="https://github.com/sahan-maker">GitHub</a>
+<a href="https://www.linkedin.com/in/sahan-wijethunga">LinkedIn</a>
+<a href="mailto:sahanprathibhawije@gmail.com">Email</a>
+</div>
+</div>
+<figure class="plot" style="margin:0">
+<svg viewBox="0 0 360 250" role="img" aria-label="Real and imaginary admittance of chicken skin plotted against postmortem interval from 0 to 12 hours, at a frequency chosen with a slider.">
+<line class="ax" x1="48" y1="205" x2="342" y2="205"/><line class="ax" x1="48" y1="18" x2="48" y2="205"/>
+<text class="t" x="48" y="222" text-anchor="middle">0</text><text class="t" x="146" y="222" text-anchor="middle">4</text><text class="t" x="244" y="222" text-anchor="middle">8</text><text class="t" x="342" y="222" text-anchor="middle">12 h</text>
+<text class="t" x="195" y="242" text-anchor="middle">Postmortem interval</text>
+<text class="t" x="42" y="209" text-anchor="end">0</text><text id="ym" class="t" x="42" y="26" text-anchor="end"></text>
+<text class="t" x="54" y="14">mS</text>
+<path id="c1" class="c1"/><path id="c2" class="c2"/>
+<line id="mk" class="mk" y1="18" y2="205"/>
+<circle id="d1" class="dot" r="5"/><circle id="d2" class="dot" r="5"/>
+<text class="t" x="300" y="34" fill="" style="fill:var(--accent)">real (G)</text><text class="t" x="300" y="50" style="fill:var(--rose)">imaginary (B)</text>
+</svg>
+<label for="tm">Time <input id="tm" type="range" min="30" max="720" step="15" value="30"><output for="tm" id="tmo">0.5 h</output></label>
+<label for="f">Frequency <input id="f" type="range" min="0" max="100" value="100"><output id="fo" for="f">100 MHz</output></label>
+<p id="ro" aria-live="off"></p>
+<p>Chicken skin, 50 kHz to 100 MHz. Smoothed trends read off the 7th-order fits in my thesis, with values between my plotted frequencies interpolated. Slide the frequency down and the imaginary part overtakes the real part. Not raw data.</p>
+</figure>
+</div>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="section-header reveal">
-      <span class="section-num">01</span>
-      <h2 class="section-title">About</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="about-grid">
-      <div class="about-text reveal">
-        <p>I'm a Physics Honours graduate with a Computer Science minor, working at the intersection of experimental physics, biomedical engineering, and electronics. My research spans bio-impedance spectroscopy, radiation physics, and drone systems for swarm robotics.</p>
-        <p>Beyond the lab, I've represented Sri Lanka in a climate fellowship at Vanderbilt University and engaged with U.S. Department of State officials on climate action in Washington D.C. I lead and contribute to student organisations and love translating complex ideas into clear, creative forms — whether through scientific writing, digital art, or 3D animation.</p>
-        <p>IELTS 8.0 · B.Sc. Honours in Physics</p>
-      </div>
-      <!-- <div class="about-stats reveal">
-        <div class="stat-box">
-          <div class="stat-num">3+</div>
-          <div class="stat-label">Research Projects</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">50+</div>
-          <div class="stat-label">Volunteer Projects/yr</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">3</div>
-          <div class="stat-label">International Schools</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">8.0</div>
-          <div class="stat-label">IELTS Score</div>
-        </div> -->
-      </div>
-    </div>
-  </section>
+<div class="chips" role="group" aria-label="Filter the page by theme">
+<span class="chiplabel">Show</span>
+<button type="button" data-f="all" aria-pressed="true">Everything</button>
+<button type="button" data-f="soft" aria-pressed="false">Soft materials</button>
+<button type="button" data-f="theory" aria-pressed="false">Theoretical physics</button>
+<button type="button" data-f="elec" aria-pressed="false">Electronics and RF</button>
+<button type="button" data-f="teach" aria-pressed="false">Teaching and service</button>
+<span id="fstat" class="chiplabel" aria-live="polite"></span>
+</div>
 
-  <!-- RESEARCH -->
-  <section id="research">
-    <div class="section-header reveal">
-      <span class="section-num">02</span>
-      <h2 class="section-title">Research</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="research-list">
+<section id="research">
+<h2>Research</h2>
+<div class="focus"><p><strong>Main direction: soft materials and electrical interactions.</strong> I want to understand how electric fields, charge and ions behave in soft, wet and structured matter such as tissue, gels and polymers, and to build the electronics and RF hardware that probes them.</p></div>
+<div class="cols"><div class="k">Apr–Dec 2025</div><div>
+<div class="entry" data-t="soft elec" id="thesis"><h3>Complex admittance profiling of animal tissues to study postmortem interval</h3>
+<div class="when">Undergraduate honours thesis, University of Peradeniya. Supervisor: Dr. C. P. Jayalath</div>
+<p>I built an open-ended coaxial probe from a lathed UHF connector and used a calibrated nanoVNA-F V2 to track the complex admittance of chicken skin over the first 12 hours after death, at 101 frequencies from 50 kHz to 100 MHz. I wrote a Python viewer that converts the reflection data to admittance and plots Nyquist and single-frequency curves.</p>
+<p>The raw data were noisy, mostly from probe contact. 7th-order fits still showed coherent trends. The real part rose and then levelled off or declined. At low frequencies the imaginary part was larger, and at high frequencies the real part was larger. Next steps are a spring-loaded probe holder, a better analyzer and ethical clearance for more samples.</p>
+<p><span class="tag">impedance spectroscopy</span><span class="tag">nanoVNA</span><span class="tag">open-ended coaxial probe</span><span class="tag">bio-impedance</span><span class="tag">scikit-rf</span></p><aside class="note"><figure><img src="assets/probe.jpg" width="640" height="529" loading="lazy" alt="Open-ended coaxial probe made from a UHF connector, with a flat polished face filled with white nylon and a gold centre pin, on a wooden table."><figcaption>The probe I built: a UHF connector lathed flat and filled with nylon.</figcaption></figure>
+<p class="eq">Y = Y₀ (1 − S₁₁) / (1 + S₁₁)</p><p>How each reflection reading becomes admittance. S₁₁ is the calibrated reflection coefficient at the probe tip and Y₀ = 0.02 S for a 50 Ω system.</p></aside></div></div>
+<div class="k">Sep 2023</div><div>
+<div class="entry" data-t="elec" id="xray"><h3>Low-cost X-ray dose-area product measurement</h3>
+<div class="when">Radiation Physics Laboratory, University of Peradeniya (volunteer research assistant)</div>
+<p>Contributed to a laser-assisted, low-cost system for measuring X-ray dose-area product.</p></div></div>
+</div>
+</section>
 
-      <div class="research-item reveal">
-        <div class="research-date">Apr 2025<br>— Present</div>
-        <div class="research-content">
-          <h3>Admittance Profiling of Animal Tissues</h3>
-          <div class="research-role">Undergraduate Research Project · University of Peradeniya</div>
-          <p>Studying postmortem interval estimation through bio-impedance and complex admittance characterisation.</p>
-          <ul>
-            <li>Developed a bio-impedance measurement system using AD5933 with phase calibration for accurate complex impedance.</li>
-            <li>Modified a nanoVNA network analyser with a custom open-ended coaxial probe for tissue characterisation.</li>
-          </ul>
-        </div>
-      </div>
+<section id="theory">
+<h2>Theoretical physics</h2>
+<div class="cols"><div class="k">Preprint 2026</div><div>
+<div class="entry" data-t="theory" id="preprint"><h3>A Toy Model of Time Dilation as a Superposition of Time-Rate Branches on a Finite Rapidity Lattice</h3>
+<div class="when">Consistency conditions and experimental bounds</div>
+<p>A toy model that treats time dilation as a superposition of time-rate branches on a finite rapidity lattice, with consistency conditions and bounds from experiment.</p>
+<p><a href="https://doi.org/10.5281/zenodo.23031106">doi.org/10.5281/zenodo.23031106</a></p>
+<details class="demo"><summary>Try the idea: a boost slides the weight along a lattice of rapidities</summary>
+<div class="demobody">
+<p>Each rung of the lattice is a branch with its own time rate. Sharp at one rung, the clock slows by the usual 1/γ. Spread over several, the clock rate is the weighted average of its branches.</p>
+<svg id="pbars" viewBox="0 0 560 215" role="img" aria-label="Bar chart of branch weights across a finite lattice of rapidity rungs. The bars shift sideways when the boost slider moves and stop at the lattice edge."></svg>
+<div class="ctl">
+<label for="ps">Boost <input id="ps" type="range" min="0" max="10" value="4"><output id="pso" for="ps"></output></label>
+<label for="pg">Spread <input id="pg" type="range" min="0" max="3" step="0.5" value="0"><output id="pgo" for="pg"></output></label>
+<label for="pk">Branches <input id="pk" type="range" min="5" max="30" value="10"><output id="pko" for="pk"></output></label>
+</div>
+<p id="pout" class="readout"></p>
+<p class="fine">A sketch from the model’s basic ingredients, not the paper’s full construction. Rapidity spacing is 0.1 per rung. The preprint has the consistency conditions and experimental bounds.</p>
+</div></details><aside class="note"><p><strong>In short.</strong> Time dilation is modelled as several time-rate branches in superposition, on a finite lattice of rapidities, and then checked against consistency conditions and experimental bounds.</p></aside></div></div>
+<div class="k">2025</div><div>
+<div class="entry" data-t="theory" id="er-epr"><h3>ER = EPR and the holographic principle</h3>
+<div class="when">Undergraduate seminar poster and presentation</div>
+<p>I examined how geometric structures such as Einstein–Rosen bridges may emerge from quantum entanglement, and what that means for the microstructure of spacetime.</p><aside class="note"><p><strong>The idea.</strong> A wormhole-like bridge in spacetime may be what quantum entanglement looks like in geometry.</p></aside></div></div>
+<div class="k">2024</div><div>
+<div class="entry" data-t="theory" id="asteroseismology"><h3>Sri Lankan Summer School of Stellar Evolution and Asteroseismology</h3>
+<div class="when">ICTP Physics Without Frontiers</div>
+<p>Ran MESA stellar simulations on Linux and followed lectures on the theory and observation of asteroseismology.</p></div></div>
+<div class="k">2025</div><div>
+<div class="entry" data-t="theory"><h3>School on Synchrotron Light Sources and Their Applications</h3>
+<div class="when">ICTP online school</div>
+<p>Design, operation and research use of modern synchrotron light sources.</p></div></div>
+</div>
+</section>
 
-      <div class="research-item reveal">
-        <div class="research-date">Jun 2025<br>— Present</div>
-        <div class="research-content">
-          <h3>Qbits Lab — Drone Systems & Swarm Robotics</h3>
-          <div class="research-role">Volunteer Assistant · CodeGen</div>
-          <p>Hardware design and manufacturing for autonomous drone systems with RTK positioning.</p>
-          <ul>
-            <li>Designed hardware schematics and PCBs using Altium Designer.</li>
-            <li>First-hand experience in drone manufacturing and RTK positioning for swarm robotics.</li>
-          </ul>
-        </div>
-      </div>
+<section id="electronics">
+<h2>Electronics and RF</h2>
+<div class="cols"><div class="k">Jun 2025–May 2026</div><div>
+<div class="entry" data-t="elec" id="qrbots"><h3>QRBOTS project, Qbits Lab at CodeGen International</h3>
+<div class="when">Volunteer research assistant</div>
+<ul class="plain">
+<li>Designed schematics and PCBs in Altium Designer.</li>
+<li>Gained hands-on experience in drone manufacturing and RTK-GPS positioning for swarm robotics.</li>
+<li>Designed a LoRa system as a redundant communication link.</li>
+<li>Monitored RF signals with an ADALM-PLUTO SDR, SDR++ and GNU Radio.</li>
+</ul></div></div>
+<div class="k">Toolbox</div><div class="entry" data-t="elec" id="toolbox">
+<p style="margin:0">
+<span class="tag">Altium Designer</span><span class="tag">ESP32</span><span class="tag">STM32</span><span class="tag">nanoVNA</span><span class="tag">RF hardware</span><span class="tag">Software-defined radio</span><span class="tag">Impedance spectroscopy</span><span class="tag">Photonics</span><span class="tag">Electronics prototyping</span><span class="tag">FreeCAD</span><span class="tag">Linux</span><span class="tag">LaTeX</span><br>
+<span class="tag">Python</span><span class="tag">MATLAB</span><span class="tag">C++</span><span class="tag">C</span><span class="tag">Java</span><span class="tag">NumPy</span><span class="tag">scikit-learn</span></p><aside class="note"><figure><img src="assets/nanovna.jpg" width="640" height="337" loading="lazy" alt="NanoVNA-F V2 vector network analyzer in its foam case with cables and adapters."><figcaption>The nanoVNA-F V2 behind every measurement.</figcaption></figure></aside></div>
+</div>
+</section>
 
-      <div class="research-item reveal">
-        <div class="research-date">Sep 2023<br>— 2024</div>
-        <div class="research-content">
-          <h3>X-ray DAP Measurement System</h3>
-          <div class="research-role">Volunteer Research Assistant · Radiation Physics Lab, UoP</div>
-          <p>Development of a low-cost system for X-ray Dose Area Product (DAP) measurements.</p>
-          <ul>
-            <li>Developed a laser-assisted image processing technique to calculate radiation beam area.</li>
-          </ul>
-        </div>
-      </div>
+<section id="projects">
+<h2>Projects</h2>
+<div class="cols"><div class="k">Hardware and RF</div><div>
+<div class="entry" data-t="elec"><h3>Harmonic radar reader and passive diode tag</h3><p>A reader and battery-free diode tag system working at 433 MHz and 866 MHz.</p></div>
+<div class="entry" data-t="elec"><h3>Fishing boat tracker for NARA</h3><p>A GPS and GSM tracker that logs positions offline, built for Sri Lanka’s National Aquatic Resources Research and Development Agency.</p></div>
+<div class="entry" data-t="elec"><h3>Mecanum wheel car</h3><p>A smartphone-controlled omnidirectional vehicle on an ESP32, with a custom MIT App Inventor interface.</p></div>
+<div class="entry" data-t="elec"><h3>Sri Lanka Robotics Challenge robots</h3><p>Autonomous PID line-following, wall-following and colour-detecting robots, built and entered in SLRC competitions.</p></div></div>
+<div class="k">Software and research ideas</div><div>
+<div class="entry" data-t="elec"><h3>AdaptHop: adaptive FHSS simulator for UAVs</h3><p>A Python simulation of frequency-hopping spread spectrum with predictive anti-jamming channel selection.</p></div>
+<div class="entry" data-t="elec"><h3>Slurm cluster setup guide for beginners</h3><p>A full Linux walkthrough of building a Slurm cluster.</p></div>
+<div class="entry" data-t="elec"><h3>LoRa mesh feasibility study for Sri Lanka</h3><p>A research idea using the University of Peradeniya campus as a case study, based on literature review, GIS and simulation.</p></div></div>
+</div>
+</section>
 
-    </div>
-  </section>
+<section id="teaching">
+<h2>Teaching and service</h2>
+<div class="cols"><div class="k">Teaching</div><div>
+<div class="entry" data-t="teach elec" id="gta"><h3>Graduate Teaching Assistant, Department of Physics, University of Peradeniya</h3><div class="when">Sep 2026–present</div>
+<p>Demonstrator at the Electronics Teaching Laboratory. Head TA for Applied Electronics Laboratory, and I grade tutorials, quizzes and reports for PHY2931 Electronics Lab.</p></div>
+<div class="entry" data-t="teach elec"><h3>Main instructor: Introduction to Applied Electronics and Robotics for Research</h3><div class="when">Aug 2026</div><p>Wrote the course and taught all 6 interactive sessions.</p></div>
+<div class="entry" data-t="teach elec"><h3>TA in charge, APS4652 Industrial Application Laboratory</h3><div class="when">Jun 2026</div><p>Delivered 9 interactive lectures on electronics and CAD design.</p></div>
+<div class="entry" data-t="teach"><h3>TA, PHY2911 General Physics Laboratory I</h3><div class="when">2026</div><p>Ran practical sessions and graded reports.</p></div>
+<div class="entry" data-t="teach"><h3>Personal tutor</h3><div class="when">2022–present</div><p>O/L mathematics, physics and ICT.</p></div></div>
+<div class="k">Leadership</div><div>
+<div class="entry" data-t="teach"><h3>Inventors’ Club of University of Peradeniya</h3><div class="when">Vice President, 2024–2025</div></div>
+<div class="entry" data-t="teach"><h3>Physical Society of University of Peradeniya</h3><div class="when">Senior Editor 2024–2025, Junior Editor 2023–2024</div></div>
+<div class="entry" data-t="teach"><h3>Rotaract Club of University of Peradeniya</h3><div class="when">Director of Club Service 2023–2024</div><p>Spirit of Service Award and several Rotary and Rotaract community service awards.</p></div>
+<div class="entry" data-t="teach"><h3>Short Course in Tropical Biodiversity and Conservation</h3><div class="when">Student volunteer, 2024, 2025, 2026</div><p>Student buddy and guide for Australian students from Federation University for three years running.</p></div></div>
+<div class="k">Fellowship</div><div>
+<div class="entry" data-t="teach" id="sscca"><h3>SSCCA Climate Tank Accelerator</h3><div class="when">2025, Seeds of Peace and the U.S. Department of State</div><p>Member of the winning team representing Sri Lanka. The prize was a fellowship at Vanderbilt University in Tennessee, continued in Washington, DC.</p></div></div>
+</div>
+</section>
 
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-header reveal">
-      <span class="section-num">03</span>
-      <h2 class="section-title">Skills</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <div class="skill-card-label">Programming</div>
-        <div class="skill-tags">
-          <span class="tag">Python</span>
-          <span class="tag">MATLAB</span>
-          <span class="tag">C++</span>
-          <span class="tag">C</span>
-          <span class="tag">Java</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-card-label">Technical</div>
-        <div class="skill-tags">
-          <span class="tag">Altium Designer</span>
-          <span class="tag">LaTeX</span>
-          <span class="tag">Hardware Design</span>
-          <span class="tag">PCB Design</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-card-label">Laboratory</div>
-        <div class="skill-tags">
-          <span class="tag">Spectroscopy</span>
-          <span class="tag">Electronics Prototyping</span>
-          <span class="tag">Bio-impedance</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-card-label">Robotics</div>
-        <div class="skill-tags">
-          <span class="tag">ESP32</span>
-          <span class="tag">STM</span>
-          <span class="tag">ROS2</span>
-          <span class="tag">PID Control</span>
-          <span class="tag">GPS Systems</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-card-label">Creative</div>
-        <div class="skill-tags">
-          <span class="tag">Digital Painting</span>
-          <span class="tag">3D Modelling</span>
-          <span class="tag">Animation</span>
-          <span class="tag">Photography</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <div class="skill-card-label">Soft Skills</div>
-        <div class="skill-tags">
-          <span class="tag">Public Speaking</span>
-          <span class="tag">Scientific Writing</span>
-          <span class="tag">Teamwork</span>
-          <span class="tag">IELTS 8.0</span>
-        </div>
-      </div>
-    </div>
-  </section>
+<section id="beyond">
+<h2>Beyond the lab</h2>
+<div class="cols"><div class="k">Interests</div><div>
+<div class="entry" data-t="*"><h3>Art and writing</h3><p>I move between physics, RF and embedded engineering, literature, fine art, and digital and technical art. Public speaking is a strength too (IELTS 8.0).</p></div></div>
+<div class="k">Education</div><div>
+<div class="entry" data-t="*" id="education"><h3>B.Sc. Honours in Physics, Computer Science minor</h3><div class="when">University of Peradeniya, 2021–2025</div><p>Second Class Upper Division, GPA 3.40 / 4.00.</p></div></div>
+</div>
+</section>
 
-  <!-- ART GALLERY -->
-  <div id="art">
-    <div class="section-header reveal">
-      <span class="section-num">04</span>
-      <h2 class="section-title">Digital Art</h2>
-      <div class="section-line"></div>
-    </div>
-    <p class="gallery-intro reveal">
-      A selection of digital and traditional works — exploring form, light, and imagination beyond the laboratory.
-    </p>
-    <div class="gallery-grid">
+<section id="contact">
+<h2>Contact</h2>
+<p style="max-width:40rem">I’m open to research collaborations, graduate opportunities and electronics projects. Write to <a href="mailto:sahanprathibhawije@gmail.com">sahanprathibhawije@gmail.com</a>, or find me on <a href="https://github.com/sahan-maker">GitHub</a> and <a href="https://www.linkedin.com/in/sahan-wijethunga">LinkedIn</a>. Based in Kandy, Sri Lanka.</p>
+</section>
+</main>
+<footer><div class="wrap">© 2026 Sahan Wijethunga</div></footer>
 
-      <!-- Art 1 -->
-      <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CT9h0m9lPOv/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
-        </div>
-      </div>
+<script>
+(function(){
+// Smoothed trends from the honours thesis (chicken skin, 0.5-12 h, 50 kHz-100 MHz), in mS.
+// Peak values (near 4 h) at log10(f); shapes are normalised time curves at T (minutes).
+var LF=[4.7,6.02,6.31,7.69,8],GP=[.1,.2,1.1,4.8,5.4],BP=[.2,.9,1.8,2.8,3.8];
+var T=[30,90,170,255,330,400,480,540,600,660,720];
+var GL=[0,.18,.25,1,.5,.25,.2,.6,1,.65,.4],GH=[.25,.55,.85,1,.85,.58,.47,.58,.68,.62,.55];
+var BL=[.12,.4,.65,1,.72,.5,.15,.2,.25,.22,.08],BH=[.78,.95,1,.97,.93,.85,.9,.87,.86,.88,.9];
+// Monotone cubic (Fritsch-Carlson) interpolation: smooth curves with no overshoot or corners.
+function mono(X,Y){var n=X.length,d=[],m=[],i,a,b,q,t;
+for(i=0;i<n-1;i++)d[i]=(Y[i+1]-Y[i])/(X[i+1]-X[i]);
+m[0]=d[0];m[n-1]=d[n-2];
+for(i=1;i<n-1;i++)m[i]=d[i-1]*d[i]<=0?0:(d[i-1]+d[i])/2;
+for(i=0;i<n-1;i++){if(d[i]===0){m[i]=m[i+1]=0}else{a=m[i]/d[i];b=m[i+1]/d[i];q=a*a+b*b;if(q>9){t=3/Math.sqrt(q);m[i]=t*a*d[i];m[i+1]=t*b*d[i]}}}
+return function(x){if(x<=X[0])return Y[0];if(x>=X[n-1])return Y[n-1];
+for(i=1;x>X[i];i++);i--;var h=X[i+1]-X[i],u=(x-X[i])/h,u2=u*u,u3=u2*u;
+return(2*u3-3*u2+1)*Y[i]+(u3-2*u2+u)*h*m[i]+(-2*u3+3*u2)*Y[i+1]+(u3-u2)*h*m[i+1]}}
+var iGP=mono(LF,GP),iBP=mono(LF,BP),iGL=mono(T,GL),iGH=mono(T,GH),iBL=mono(T,BL),iBH=mono(T,BH);
+function adm(t,lf){var w=Math.min(Math.max((lf-6.31)/1.38,0),1);
+return{g:iGP(lf)*((1-w)*iGL(t)+w*iGH(t)),b:iBP(lf)*((1-w)*iBL(t)+w*iBH(t))}}
+var tm=document.getElementById("tm"),fs=document.getElementById("f"),tmo=document.getElementById("tmo"),fo=document.getElementById("fo"),ro=document.getElementById("ro"),ym=document.getElementById("ym");
+var ymax=1;
+function X(t){return 48+t/720*294}function Y(v){return 205-v/ymax*187}
+function lf(){return 4.7+3.3*fs.value/100}
+function fmt(l){var f=Math.pow(10,l);return f>=1e6?(f/1e6).toFixed(f>=1e7?0:1)+" MHz":Math.round(f/1e3)+" kHz"}
+function curves(){var l=lf(),G=[],B=[],m=0,t,a;
+for(t=30;t<=720;t+=6){a=adm(t,l);G.push([t,a.g]);B.push([t,a.b]);m=Math.max(m,a.g,a.b)}
+ymax=m*1.1;ym.textContent=ymax.toFixed(1);
+function p(A){return A.map(function(v,i){return(i?"L":"M")+X(v[0]).toFixed(1)+","+Y(v[1]).toFixed(1)}).join("")}
+document.getElementById("c1").setAttribute("d",p(G));document.getElementById("c2").setAttribute("d",p(B));fo.textContent=fmt(l);mark()}
+function mark(){var t=+tm.value,a=adm(t,lf()),x=X(t),h=(t/60).toFixed(1).replace(".0","");tmo.textContent=h+" h";
+var mk=document.getElementById("mk");mk.setAttribute("x1",x);mk.setAttribute("x2",x);
+var d1=document.getElementById("d1"),d2=document.getElementById("d2");d1.setAttribute("cx",x);d1.setAttribute("cy",Y(a.g));d2.setAttribute("cx",x);d2.setAttribute("cy",Y(a.b));
+ro.textContent="At "+h+" h: G = "+a.g.toFixed(2)+" mS, B = "+a.b.toFixed(2)+" mS ("+(a.g>a.b?"real":"imaginary")+" part larger)"}
+tm.addEventListener("input",mark);fs.addEventListener("input",curves);
+curves();
+if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+var t0=null,stop=false;function halt(){stop=true}tm.addEventListener("pointerdown",halt);fs.addEventListener("pointerdown",halt);
+function step(ts){if(stop)return;if(!t0)t0=ts;var p=Math.min((ts-t0)/4000,1),e=1-Math.pow(1-p,3);tm.value=30+Math.round(e*46)*15;mark();if(p<1)requestAnimationFrame(step)}
+requestAnimationFrame(step)}
+})();
 
-      <!-- Art 2 -->
-      <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/Cf5j-A5PJvl/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
-        </div>
-      </div>
+(function(){
+var btns=document.querySelectorAll(".chips button"),stat=document.getElementById("fstat");
+function apply(f,label){
+document.querySelectorAll("section").forEach(function(sec){
+var es=sec.querySelectorAll(".entry");if(!es.length)return;var any=false;
+es.forEach(function(e){var t=(e.getAttribute("data-t")||"*").split(" "),show=f==="all"||t.indexOf("*")>-1||t.indexOf(f)>-1;e.hidden=!show;if(show)any=true});
+sec.querySelectorAll(".cols>.k").forEach(function(k){var d=k.nextElementSibling,vis=d.classList.contains("entry")?!d.hidden:d.querySelector(".entry:not([hidden])");k.hidden=d.hidden=!vis});
+sec.hidden=!any;var a=document.querySelector('nav a[href="#'+sec.id+'"]');if(a)a.hidden=!any});
+stat.textContent=f==="all"?"":"Showing: "+label}
+btns.forEach(function(b){b.addEventListener("click",function(){
+btns.forEach(function(x){x.setAttribute("aria-pressed",x===b?"true":"false")});apply(b.getAttribute("data-f"),b.textContent)})})
+})();
 
-      <!-- Art 3 -->
-      <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CI3Nem9lBOh/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
-        </div>
-      </div>
+(function(){
+var items=[].slice.call(document.querySelectorAll(".rail li")),tick;
+function sync(){items.forEach(function(li){var t=document.getElementById(li.firstChild.getAttribute("data-to"));li.hidden=!t||!!t.closest("[hidden]")});spy()}
+function spy(){var cur=null,y=window.innerHeight*.35;
+items.forEach(function(li){if(li.hidden)return;var t=document.getElementById(li.firstChild.getAttribute("data-to"));if(t.getBoundingClientRect().top<=y)cur=li});
+items.forEach(function(li){li.classList.toggle("on",li===cur);if(li===cur)li.firstChild.setAttribute("aria-current","true");else li.firstChild.removeAttribute("aria-current")})}
+window.addEventListener("scroll",function(){if(tick)return;tick=requestAnimationFrame(function(){tick=0;spy()})},{passive:true});
+window.addEventListener("resize",spy);
+document.querySelectorAll(".chips button").forEach(function(b){b.addEventListener("click",function(){setTimeout(sync,0)})});
+sync();
+})();
 
-      <!-- Art 4 -->
-      <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CDh-LhKFycn/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
-        </div>
-      </div>
-
-      <!-- Art 5 -->
-      <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/CNEweK0lBZh/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
-        </div>
-      </div>
-
-      <!-- Art 6 -->
-      <div class="gallery-item">
-        <div class="ig-wrap">
-          <blockquote class="instagram-media"
-            data-instgrm-captioned
-            data-instgrm-permalink="https://www.instagram.com/p/Cfan8PqvLqv/"
-            data-instgrm-version="14"
-            style="width:100%;margin:0;border:none;border-radius:0;">
-          </blockquote>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ACTIVITIES -->
-  <section id="activities">
-    <div class="section-header reveal">
-      <span class="section-num">05</span>
-      <h2 class="section-title">Activities</h2>
-      <div class="section-line"></div>
-    </div>
-    <div class="activities-cols">
-      <div class="activity-group reveal">
-        <h3>Professional</h3>
-        <div class="activity-item">
-          <span class="activity-name">Inventors' Club, UoP</span>
-          <span class="activity-role">Vice President '24–'25</span>
-        </div>
-        <div class="activity-item">
-          <span class="activity-name">Physical Society, UoP</span>
-          <span class="activity-role">Senior Editor '24–'25</span>
-        </div>
-        <div class="activity-item">
-          <span class="activity-name">Rotaract Club, UoP</span>
-          <span class="activity-role">Director of Club Service</span>
-        </div>
-      </div>
-      <div class="activity-group reveal">
-        <h3>Schools &amp; Fellowships</h3>
-        <div class="activity-item">
-          <span class="activity-name">SSCCA Climate Tank — Vanderbilt &amp; D.C.</span>
-          <span class="activity-role">Winning team · 2025</span>
-        </div>
-        <div class="activity-item">
-          <span class="activity-name">ICTP Synchrotron Light Sources School</span>
-          <span class="activity-role">Online · 2025</span>
-        </div>
-        <div class="activity-item">
-          <span class="activity-name">Sri Lankan Summer School — Asteroseismology</span>
-          <span class="activity-role">ICTP PWF · 2024</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <h2 class="contact-big reveal">Let's <em>connect.</em></h2>
-    <p class="contact-sub reveal">Open to research collaborations, opportunities, and creative projects.</p>
-    <div class="contact-links reveal">
-      <a href="/cdn-cgi/l/email-protection#c6b5a7aea7a8b6b4a7b2aeafa4aea7b1afaca386a1aba7afaae8a5a9ab" class="contact-btn">Email Me</a>
-      <a href="https://linkedin.com/in/sahan-wijethunga" target="_blank" class="contact-btn outline">LinkedIn</a>
-      <a href="https://github.com/sahan-maker" target="_blank" class="contact-btn outline">GitHub</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2025 Sahan Prathibha · University of Peradeniya</p>
-    <p>Designed &amp; built with care</p>
-  </footer>
-
-  <script>
-    // ─── SCROLL REVEAL ───
-    const reveals = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-        }
-      });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
-
-  </script>
-  <script async src="//www.instagram.com/embed.js"></script>
+(function(){
+var K=document.getElementById("pk"),G=document.getElementById("pg"),S=document.getElementById("ps"),svg=document.getElementById("pbars"),o=document.getElementById("pout"),D=.1;
+function draw(){
+var k=+K.value,sg=+G.value,n=2*k+1;S.max=k;if(+S.value>k)S.value=k;var s=+S.value,w=[],sum=0,mx=0,i,v,rate=0,h="";
+for(i=-k;i<=k;i++){v=sg===0?(i===s?1:0):Math.exp(-(i-s)*(i-s)/(2*sg*sg));w.push(v);sum+=v}
+for(i=0;i<n;i++){w[i]/=sum;rate+=w[i]/Math.cosh((i-k)*D);if(w[i]>mx)mx=w[i]}
+var bw=520/n,c=20+k*bw+bw/2;
+for(i=0;i<n;i++){var ht=w[i]/mx*120;if(ht>.3)h+='<rect x="'+(20+i*bw+.5).toFixed(1)+'" y="'+(150-ht).toFixed(1)+'" width="'+Math.max(bw-1,1).toFixed(1)+'" height="'+ht.toFixed(1)+'"/>'}
+h+='<line class="ax" x1="20" y1="150" x2="540" y2="150"/><line class="edge" x1="20" y1="20" x2="20" y2="150"/><line class="edge" x1="540" y1="20" x2="540" y2="150"/>';
+h+='<line class="ax" x1="'+c+'" y1="150" x2="'+c+'" y2="158"/><text class="t" x="'+c+'" y="173" text-anchor="middle">at rest</text>';
+h+='<text class="t" x="20" y="173">lattice edge</text><text class="t" x="540" y="173" text-anchor="end">lattice edge</text>';
+h+='<text class="t" x="280" y="205" text-anchor="middle">rapidity rungs (branches), scaled weight</text>';
+svg.innerHTML=h;
+document.getElementById("pso").textContent=s+" rung"+(s===1?"":"s");
+document.getElementById("pgo").textContent=sg===0?"sharp":"± "+sg+" rungs";
+document.getElementById("pko").textContent="N = "+n;
+var vv=Math.tanh(s*D),vm=Math.tanh(k*D);
+o.textContent="Speed "+vv.toFixed(2)+" c. Top speed for this lattice "+vm.toFixed(3)+" c. Clock rate: one branch "+(1/Math.cosh(s*D)).toFixed(3)+", superposition "+rate.toFixed(3)+"."}
+[K,G,S].forEach(function(e){e.addEventListener("input",draw)});draw();
+})();
+</script>
 </body>
 </html>

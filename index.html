@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sahan Wijethunga – Soft materials and electrical interactions</title>
 <meta name="description" content="Physicist and electronics engineer working on how electricity interacts with soft materials. Bio-impedance, RF, embedded systems and theoretical physics.">
-<script>try{var th=localStorage.getItem("theme");if(th==="light"||th==="dark")document.documentElement.setAttribute("data-theme",th)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,7 +12,6 @@
 :root{--bg:#f1f4f2;--panel:#e4eae7;--ink:#17242a;--mute:#4f6068;--line:#c3cfca;--accent:#3b3fd8;--rose:#b83a63;
 --serif:"Instrument Serif",Georgia,"Times New Roman",serif;--sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121b20;--panel:#1b272d;--ink:#e6eeeb;--mute:#98aab2;--line:#2e3e46;--accent:#8e91ff;--rose:#f07fa3}}
-:root[data-theme="dark"]{--bg:#121b20;--panel:#1b272d;--ink:#e6eeeb;--mute:#98aab2;--line:#2e3e46;--accent:#8e91ff;--rose:#f07fa3}
 :root{box-sizing:border-box}*,*::before,*::after{box-sizing:inherit}
 html{scroll-behavior:smooth;scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 var(--sans)}
@@ -25,8 +23,6 @@ header.top .wrap{display:flex;gap:1.5rem;align-items:center;justify-content:spac
 .brand{font:1.35rem var(--serif);color:var(--ink);text-decoration:none}
 nav{display:flex;gap:1.1rem;overflow-x:auto;font-size:.95rem}
 nav a{color:var(--mute);text-decoration:none;white-space:nowrap}nav a:hover{color:var(--accent)}
-.themebtn{flex:none;font:500 .88rem var(--sans);color:var(--ink);background:transparent;border:1px solid var(--line);border-radius:99px;padding:.3rem .8rem;cursor:pointer}
-.themebtn:hover{border-color:var(--accent);color:var(--accent)}
 .hero{padding:4rem 0 3rem;display:grid;grid-template-columns:1.15fr 1fr;gap:3rem;align-items:center}
 h1{font:400 clamp(2.8rem,6.5vw,5rem)/1 var(--serif);margin:0 0 1.2rem;letter-spacing:-.01em}
 .lede{font-size:1.2rem;max-width:34rem;margin:0 0 1.5rem}
@@ -82,18 +78,13 @@ main.wrap{max-width:1500px;padding-left:210px;padding-right:330px}
 .demo summary{cursor:pointer;padding:.7rem 1rem;font-weight:500;color:var(--accent)}
 .demo summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 .demobody{padding:0 1rem 1rem}.demobody p{margin:.3rem 0 .6rem}
-#pbars,#ebr{width:100%;height:auto;display:block}
-#pbars .ax,#ebr .ax{stroke:var(--mute);stroke-width:1}#pbars .edge{stroke:var(--rose);stroke-width:1.5;stroke-dasharray:4 3}
-#pbars .t,#ebr .t{fill:var(--mute);font:12px var(--sans)}#pbars rect{fill:var(--accent)}
-#ebr .node{fill:var(--bg);stroke:var(--ink);stroke-width:1.5}#ebr .nl{fill:var(--ink);font:600 15px var(--sans)}
-#ebr .tube{fill:var(--accent);fill-opacity:.22;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
-#ebr .wave{fill:none;stroke:var(--rose);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:2 5}
+#pbars{width:100%;height:auto;display:block}
+#pbars .ax{stroke:var(--mute);stroke-width:1}#pbars .edge{stroke:var(--rose);stroke-width:1.5;stroke-dasharray:4 3}
+#pbars .t{fill:var(--mute);font:12px var(--sans)}#pbars rect{fill:var(--accent)}
 .ctl label{display:flex;gap:.8rem;align-items:center;font-size:.92rem;color:var(--mute);margin:.2rem 0}
 .ctl label input{flex:1;accent-color:var(--accent)}.ctl output{min-width:5.5rem;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
 .demobody .readout{color:var(--ink);font-size:.95rem;line-height:1.5;margin-top:.7rem}
 .demobody .fine{font-size:.82rem;color:var(--mute);line-height:1.45}
-.posterlink{display:inline-block;margin-top:.7rem;border:1px solid var(--ink);color:var(--ink);padding:.35rem .8rem;border-radius:2px;text-decoration:none;font-weight:500;font-size:.93rem}
-.posterlink:hover{border-color:var(--accent);color:var(--accent)}
 footer{padding:2.5rem 0 3rem;border-top:1px solid var(--line);color:var(--mute);font-size:.92rem}
 @media (max-width:760px){.hero{grid-template-columns:minmax(0,1fr);padding-top:2.5rem}.cols{grid-template-columns:minmax(0,1fr)}header.top .wrap{flex-direction:column;align-items:stretch;gap:.4rem}nav{max-width:100%}}
 </style>
@@ -102,7 +93,6 @@ footer{padding:2.5rem 0 3rem;border-top:1px solid var(--line);color:var(--mute);
 <header class="top"><div class="wrap">
 <a class="brand" href="#top">Sahan Wijethunga</a>
 <nav aria-label="Sections"><a href="#research">Research</a><a href="#theory">Theory</a><a href="#electronics">Electronics</a><a href="#projects">Projects</a><a href="#teaching">Teaching</a><a href="#beyond">Beyond</a><a href="#contact">Contact</a></nav>
-<button type="button" class="themebtn" id="themebtn" aria-label="Switch colour theme">Dark</button>
 </div></header>
 
 <main id="top" class="wrap">
@@ -197,19 +187,7 @@ footer{padding:2.5rem 0 3rem;border-top:1px solid var(--line);color:var(--mute);
 <div class="k">2025</div><div>
 <div class="entry" data-t="theory" id="er-epr"><h3>ER = EPR and the holographic principle</h3>
 <div class="when">Undergraduate seminar poster and presentation</div>
-<p>I examined how geometric structures such as Einstein–Rosen bridges may emerge from quantum entanglement, and what that means for the microstructure of spacetime.</p>
-<details class="demo"><summary>Try the idea: turn up the entanglement and watch a bridge open</summary>
-<div class="demobody">
-<p>Two particles, A and B, share no link at first. As their entanglement grows, the ER = EPR conjecture says the geometry between them grows a bridge too. Entanglement (EPR) and wormhole (Einstein–Rosen) are two descriptions of one connection.</p>
-<svg id="ebr" viewBox="0 0 560 215" role="img" aria-label="Two particles, A on the left and B on the right. A dotted wave of entanglement and a wormhole-like bridge between them both grow as the entanglement slider increases."></svg>
-<div class="ctl">
-<label for="es">Entanglement <input id="es" type="range" min="0" max="100" value="60"><output id="eso" for="es"></output></label>
-</div>
-<p id="eout" class="readout" aria-live="polite"></p>
-<p class="fine">A cartoon of the conjecture, not a calculation. The slider is a stand-in for how entangled the pair is, from none to maximal.</p>
-<a class="posterlink" href="assets/er-epr-poster.pdf">Read my poster (PDF)</a>
-</div></details>
-<aside class="note"><p><strong>The idea.</strong> A wormhole-like bridge in spacetime may be what quantum entanglement looks like in geometry.</p></aside></div></div>
+<p>I examined how geometric structures such as Einstein–Rosen bridges may emerge from quantum entanglement, and what that means for the microstructure of spacetime.</p><aside class="note"><p><strong>The idea.</strong> A wormhole-like bridge in spacetime may be what quantum entanglement looks like in geometry.</p></aside></div></div>
 <div class="k">2024</div><div>
 <div class="entry" data-t="theory" id="asteroseismology"><h3>Sri Lankan Summer School of Stellar Evolution and Asteroseismology</h3>
 <div class="when">ICTP Physics Without Frontiers</div>
@@ -374,38 +352,6 @@ document.getElementById("pko").textContent="N = "+n;
 var vv=Math.tanh(s*D),vm=Math.tanh(k*D);
 o.textContent="Speed "+vv.toFixed(2)+" c. Top speed for this lattice "+vm.toFixed(3)+" c. Clock rate: one branch "+(1/Math.cosh(s*D)).toFixed(3)+", superposition "+rate.toFixed(3)+"."}
 [K,G,S].forEach(function(e){e.addEventListener("input",draw)});draw();
-})();
-
-(function(){
-var b=document.getElementById("themebtn"),root=document.documentElement,mq=window.matchMedia("(prefers-color-scheme: dark)");
-function cur(){var a=root.getAttribute("data-theme");return a||(mq.matches?"dark":"light")}
-function label(){var c=cur();b.textContent=c==="dark"?"Light":"Dark";b.setAttribute("aria-label","Switch to "+(c==="dark"?"light":"dark")+" theme")}
-b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";root.setAttribute("data-theme",n);try{localStorage.setItem("theme",n)}catch(e){}label()});
-if(mq.addEventListener)mq.addEventListener("change",label);
-label();
-})();
-
-(function(){
-// ER = EPR cartoon: entanglement s (0..1) opens a bridge between particles A and B.
-var E=document.getElementById("es"),svg=document.getElementById("ebr"),o=document.getElementById("eout"),eo=document.getElementById("eso");
-var XA=118,XB=442,CX=280,HALF=162,CY=92,R=28,N=40;
-function draw(){
-var s=+E.value/100,h="",i,x,u,hh,top=[],bot=[],wv="";
-if(s>0){
-for(i=0;i<=N;i++){x=XA+(XB-XA)*i/N;u=(x-CX)/HALF;hh=s*(8+(R-8)*u*u);top.push([x,CY-hh]);bot.push([x,CY+hh])}
-var d="M"+top.map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1)}).join("L")+"L"+bot.reverse().map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1)}).join("L")+"Z";
-h+='<path class="tube" d="'+d+'"/>';
-for(i=0;i<=N;i++){x=XA+(XB-XA)*i/N;wv+=(i?"L":"M")+x.toFixed(1)+","+(CY+9*s*Math.sin(i/N*Math.PI*6)).toFixed(1)}
-h+='<path class="wave" d="'+wv+'" opacity="'+(0.25+0.75*s).toFixed(2)+'"/>'}
-h+='<circle class="node" cx="90" cy="'+CY+'" r="'+R+'"/><circle class="node" cx="470" cy="'+CY+'" r="'+R+'"/>';
-h+='<text class="nl" x="90" y="'+(CY+5)+'" text-anchor="middle">A</text><text class="nl" x="470" y="'+(CY+5)+'" text-anchor="middle">B</text>';
-h+='<line class="ax" x1="90" y1="150" x2="470" y2="150" stroke-dasharray="2 4"/>';
-h+='<text class="t" x="280" y="176" text-anchor="middle" style="fill:var(--rose)">entanglement (the dotted wave)</text>';
-h+='<text class="t" x="280" y="196" text-anchor="middle" style="fill:var(--accent)">geometry (the bridge)</text>';
-svg.innerHTML=h;
-var pc=Math.round(s*100);eo.textContent=pc+"%";
-o.textContent=s===0?"No entanglement: A and B are separate, with no bridge between them.":s===1?"Maximal entanglement, like a Bell pair: the bridge is fully open.":"Entanglement "+pc+"%: the bridge between A and B is open to "+pc+"% of its full width."}
-E.addEventListener("input",draw);draw();
 })();
 </script>
 </body>
